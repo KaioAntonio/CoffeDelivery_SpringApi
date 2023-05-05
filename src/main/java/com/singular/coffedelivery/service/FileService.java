@@ -38,7 +38,7 @@ public class FileService {
             fileDB.setType(file.getContentType());
             fileDB.setData(file.getBytes());
 
-            fileDB.setProdutoEntity(produtoEntity);
+            fileDB.setProduto(produtoEntity);
             FileEntity fileEntity = fileRepository.save(fileDB);
             FileDTO fileDTO = objectMapper.convertValue(fileEntity, FileDTO.class);
             return fileDTO;
