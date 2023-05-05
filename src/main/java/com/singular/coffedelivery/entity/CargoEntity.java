@@ -9,12 +9,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "usuario")
+@Entity(name = "cargo")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioEntity {
+public class CargoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +24,7 @@ public class UsuarioEntity {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "senha")
-    private String senha;
-
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "usuario_cargo",
-        joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "cargo_id")
-    )
-    private List<CargoEntity> cargos;
+    @ManyToMany(mappedBy = "cargos")
+    private List<UsuarioEntity> usuarios;
 }
