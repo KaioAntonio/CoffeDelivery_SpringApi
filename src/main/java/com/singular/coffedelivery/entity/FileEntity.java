@@ -34,6 +34,6 @@ public class FileEntity {
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID_PRODUTO")
-    public ProdutoEntity produtoEntity;
+    public ProdutoEntity produto;
 
 }
