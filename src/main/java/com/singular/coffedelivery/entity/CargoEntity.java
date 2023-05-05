@@ -7,33 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Entity(name = "produto")
-@Getter
+@Entity(name = "cargo")
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoEntity {
+public class CargoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_PRODUTO")
-    private Integer idProduto;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "descricao")
-    private String descricao;
-
-    @Column(name = "tipo")
-    private String tipo;
-
-    @Column(name = "preco")
-    private Double preco;
-
     @JsonIgnore
-    @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private FileEntity file;
-
+    @ManyToMany(mappedBy = "cargos")
+    private List<UsuarioEntity> usuarios;
 }
