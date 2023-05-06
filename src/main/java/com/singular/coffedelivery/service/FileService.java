@@ -24,9 +24,9 @@ public class FileService {
 
     private final ObjectMapper objectMapper;
 
-    public FileDTO store(MultipartFile file, String id) throws RegraDeNegocioException {
+    public FileDTO store(MultipartFile file, Integer id) throws RegraDeNegocioException {
         try {
-            ProdutoDTO produto = produtoService.findById(parseInt(id));
+            ProdutoDTO produto = produtoService.findById(id);
             ProdutoEntity produtoEntity = objectMapper.convertValue(produto, ProdutoEntity.class);
             FileEntity fileEntityExiste = fileRepository.findFileEntitiesByProduto(produtoEntity);
             FileEntity fileDB = new FileEntity();
@@ -47,8 +47,8 @@ public class FileService {
         }
     }
 
-    public String getImage(String id) throws RegraDeNegocioException {
-        ProdutoDTO produto = produtoService.findById(parseInt(id));
+    public String getImage(Integer id) throws RegraDeNegocioException {
+        ProdutoDTO produto = produtoService.findById(id);
         ProdutoEntity produtoEntity = objectMapper.convertValue(produto, ProdutoEntity.class);
         FileEntity fileEntity = fileRepository.findByProduto(produtoEntity)
                 .orElseThrow(() -> new RegraDeNegocioException("Imagem não encontrada ou não existe."));
