@@ -1,26 +1,24 @@
 package com.singular.coffedelivery.dto.produto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.singular.coffedelivery.entity.FileEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class ProdutoCreateDTO {
     @NotBlank
-    @Schema(description = "Café Expresso")
+    @Schema(description = "Nome do Produto", example = "Café Expresso")
     private String nome;
     @NotBlank
-    @Schema(description = "Expresso Geladinho")
+    @Schema(description = "Descrição do Produto",example = "Expresso Geladinho")
     private String descricao;
     @NotBlank
-    @Schema(description = "Gelado")
+    @Schema(description = "Tipo do Produto",example = "Gelado")
     private String tipo;
-    @NotBlank
-    @Schema(description = "10.90")
+    @NotNull
+    @Schema(description = "Preço do Produto",example = "10.90")
     private Double preco;
 
 }
