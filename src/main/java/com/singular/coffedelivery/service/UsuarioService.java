@@ -34,7 +34,7 @@ public class UsuarioService {
         usuarioEntity.setSenha(encode);
         usuarioRepository.save(usuarioEntity);
         UsuarioDTO usuarioDTO = objectMapper.convertValue(usuarioEntity, UsuarioDTO.class);
-        usuarioDTO.setIdUsuario(usuarioEntity.getId());
+        usuarioDTO.setIdUsuario(usuarioEntity.getIdUsuario());
         return usuarioDTO;
     }
 

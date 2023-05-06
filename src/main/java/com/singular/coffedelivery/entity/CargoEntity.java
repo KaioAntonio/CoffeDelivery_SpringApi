@@ -19,8 +19,8 @@ public class CargoEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_cargo")
+    private Integer idCargo;
 
     @Column(name = "nome")
     private String nome;

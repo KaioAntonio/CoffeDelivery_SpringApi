@@ -37,7 +37,7 @@ public class TokenService {
                 .collect(Collectors.toList());
         return Jwts.builder()
                 .setIssuer("scanner-api")
-                .claim(Claims.ID, usuarioEntity.getId().toString())
+                .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
                 .claim(KEY_CARGOS, cargosUsuarios)
                 .setIssuedAt(nowDT)
                 .setExpiration(expDT)

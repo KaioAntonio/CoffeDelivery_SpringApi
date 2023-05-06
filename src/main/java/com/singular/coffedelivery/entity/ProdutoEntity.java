@@ -1,6 +1,7 @@
 package com.singular.coffedelivery.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.singular.coffedelivery.enums.Situacao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public class ProdutoEntity {
 
     @Column(name = "preco")
     private Double preco;
+
+    @Column(name = "situacao")
+    private Situacao situacao;
 
     @JsonIgnore
     @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

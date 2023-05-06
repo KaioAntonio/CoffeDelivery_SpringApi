@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,12 +22,13 @@ public class UsuarioEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_usuario")
+    private Integer idUsuario;
 
     @Column(name = "nome")
     private String nome;
 
+    @Email
     @Column(name = "email")
     private String email;
 
@@ -37,8 +39,8 @@ public class UsuarioEntity implements UserDetails {
     @ManyToMany
     @JoinTable(
         name = "usuario_cargo",
-        joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "cargo_id")
+        joinColumns = @JoinColumn(name = "id_usuario"),
+        inverseJoinColumns = @JoinColumn(name = "id_cargo")
     )
     private List<CargoEntity> cargos;
 
