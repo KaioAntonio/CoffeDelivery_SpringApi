@@ -33,12 +33,24 @@ public class ProdutoController {
     @PostMapping("/uploadImage")
     ResponseEntity<FileDTO> uploadImage(@RequestParam("file")MultipartFile file,
                                         @RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(fileService.store(file,idProduto), HttpStatus.OK);
+        return new ResponseEntity<>(fileService.store(file,idProduto), HttpStatus.CREATED);
     }
 
     @GetMapping("/image")
     public ResponseEntity<String> recuperarImagem(@RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
         return new ResponseEntity<>(fileService.getImage(idProduto), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProdutoDTO> updateProduct(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
+                                                    @PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+        return new ResponseEntity<>(produtoService.update(produtoCreateDTO, idProduto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+        produtoService.delete(idProduto);
+        return ResponseEntity.noContent().build();
     }
 
 
