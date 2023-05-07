@@ -10,6 +10,9 @@ import com.singular.coffedelivery.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ProdutoService {
@@ -31,6 +34,13 @@ public class ProdutoService {
 
     }
 
+    public List<ProdutoDTO> list() {
+        return produtoRepository.findAll()
+                .stream()
+                .map(produtoEntity -> objectMapper.convertValue(produtoEntity, ProdutoDTO.class))
+                .collect(Collectors.toList());
+    }
+
     public ProdutoDTO update(ProdutoCreateDTO produtoCreateDTO, Integer idProduto) throws RegraDeNegocioException {
         ProdutoEntity produtoAntigo = objectMapper.convertValue(
                 findById(idProduto), ProdutoEntity.class);
@@ -39,6 +49,7 @@ public class ProdutoService {
         produtoAntigo.setTipo(produtoCreateDTO.getTipo());
         produtoAntigo.setNome(produtoCreateDTO.getNome());
         produtoAntigo.setPreco(produtoAntigo.getPreco());
+
 
         ProdutoDTO produtoAtualizado = objectMapper.convertValue(
                 produtoRepository.save(produtoAntigo), ProdutoDTO.class);
