@@ -64,6 +64,4 @@ public class ProdutoController implements ProdutoControllerInterface {
         produtoService.delete(idProduto);
         return ResponseEntity.noContent().build();
     }
-
-
 }
