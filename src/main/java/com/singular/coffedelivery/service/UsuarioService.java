@@ -21,8 +21,9 @@ public class UsuarioService {
     private final ObjectMapper objectMapper;
 
     private final PasswordEncoder passwordEncoder;
-    public Optional<UsuarioEntity> findByEmailAndSenha(String email, String senha){
-        return usuarioRepository.findByEmailAndSenha(email, senha);
+    public Optional<UsuarioEntity> findByEmailAndSenha(String email, String senha) throws RegraDeNegocioException {
+        return Optional.ofNullable(usuarioRepository.findByEmailAndSenha(email, senha)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado!")));
     }
     public Optional<UsuarioEntity> findByEmail(String email){
         return usuarioRepository.findByEmail(email);
