@@ -41,6 +41,11 @@ public class ProdutoController {
         return new ResponseEntity<>(fileService.getImage(idProduto), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProdutoDTO> listProducts(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+        return new ResponseEntity<>(produtoService.findById(idProduto), HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<ProdutoDTO> updateProduct(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
                                                     @PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
