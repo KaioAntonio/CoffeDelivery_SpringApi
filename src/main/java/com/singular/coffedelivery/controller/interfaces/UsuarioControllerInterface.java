@@ -1,4 +1,4 @@
 package com.singular.coffedelivery.controller.interfaces;
 
-public interface UsuarioInterface {
+public interface UsuarioControllerInterface {
 }

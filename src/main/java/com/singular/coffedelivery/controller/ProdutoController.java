@@ -1,5 +1,6 @@
 package com.singular.coffedelivery.controller;
 
+import com.singular.coffedelivery.controller.interfaces.ProdutoControllerInterface;
 import com.singular.coffedelivery.dto.produto.FileDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoDTO;
@@ -15,44 +16,50 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Validated
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("produto")
-public class ProdutoController {
+public class ProdutoController implements ProdutoControllerInterface {
     private final ProdutoService produtoService;
     private final FileService fileService;
 
-    @PostMapping()
-    ResponseEntity<ProdutoDTO> create(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO) {
+    @Override
+    public ResponseEntity<ProdutoDTO> create(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO) {
         return new ResponseEntity<>(produtoService.create(produtoCreateDTO), HttpStatus.OK);
     }
 
-    @PostMapping("/uploadImage")
-    ResponseEntity<FileDTO> uploadImage(@RequestParam("file")MultipartFile file,
-                                        @RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
+    @Override
+    public ResponseEntity<FileDTO> uploadImage(@RequestParam("file") MultipartFile file,
+                                               @RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
         return new ResponseEntity<>(fileService.store(file,idProduto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/image")
+    @Override
     public ResponseEntity<String> recuperarImagem(@RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
         return new ResponseEntity<>(fileService.getImage(idProduto), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProdutoDTO> listProducts(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+    @Override
+    public ResponseEntity<ProdutoDTO> listProductsById(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
         return new ResponseEntity<>(produtoService.findById(idProduto), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @Override
+    public ResponseEntity<List<ProdutoDTO>> listAllProducts(){
+        return new ResponseEntity<>(produtoService.list(), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<ProdutoDTO> updateProduct(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
                                                     @PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
         return new ResponseEntity<>(produtoService.update(produtoCreateDTO, idProduto), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @Override
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
         produtoService.delete(idProduto);
         return ResponseEntity.noContent().build();
