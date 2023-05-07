@@ -27,6 +27,7 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
+<<<<<<< HEAD
 
     public PageDTO<UsuarioDTO> listUsers(Integer pagina, Integer tamanho) {
 
@@ -45,6 +46,11 @@ public class UsuarioService {
     //TODO
     public Optional<UsuarioEntity> findByEmailAndSenha(String email, String senha){
         return usuarioRepository.findByEmailAndSenha(email, senha);
+=======
+    public Optional<UsuarioEntity> findByEmailAndSenha(String email, String senha) throws RegraDeNegocioException {
+        return Optional.ofNullable(usuarioRepository.findByEmailAndSenha(email, senha)
+                .orElseThrow(() -> new RegraDeNegocioException("Usuário não encontrado!")));
+>>>>>>> feat/produto
     }
     public Optional<UsuarioEntity> findByEmail(String email){
         return usuarioRepository.findByEmail(email);
