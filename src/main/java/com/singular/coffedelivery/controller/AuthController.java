@@ -34,7 +34,7 @@ public class AuthController implements AuthControllerInterface {
     private final AuthenticationManager authenticationManager;
 
     @Override
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
+    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO){
         try {
             UsernamePasswordAuthenticationToken userAuthDTO = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),
                     loginDTO.getSenha());
@@ -44,7 +44,7 @@ public class AuthController implements AuthControllerInterface {
             return new ResponseEntity<>(tokenService.getToken(usuarioEntity), HttpStatus.OK);
         }
         catch (Exception e){
-            throw new RegraDeNegocioException("Erro ao realizar o login!");
+            return new ResponseEntity<>("Erro ao realizar o login!", HttpStatus.FORBIDDEN);
         }
 
     }
