@@ -1,6 +1,5 @@
 package com.singular.coffedelivery.controller.interfaces;
 
-
 import com.singular.coffedelivery.dto.produto.FileDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoDTO;
@@ -84,7 +83,7 @@ public interface ProdutoControllerInterface {
     )
     @PutMapping("/{id}")
     ResponseEntity<ProdutoDTO> updateProduct(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
-                                                    @PathVariable("id") Integer idProduto) throws RegraDeNegocioException;
+                                             @PathVariable("id") Integer idProduto) throws RegraDeNegocioException;
 
     @Operation(summary = "Deleta o produto por id", description = "Deleta o produto por id")
     @ApiResponses(
