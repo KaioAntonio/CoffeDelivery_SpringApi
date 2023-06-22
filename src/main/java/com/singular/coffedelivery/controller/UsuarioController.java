@@ -22,6 +22,7 @@ import javax.validation.Valid;
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
+
     @GetMapping("/list_users")
     public ResponseEntity<PageDTO<UsuarioDTO>> listUsers(Integer pagina, Integer tamanho){
         return new ResponseEntity<>(usuarioService.listUsers(pagina,tamanho), HttpStatus.OK);

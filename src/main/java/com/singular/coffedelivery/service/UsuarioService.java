@@ -42,7 +42,7 @@ public class UsuarioService {
                 tamanho,
                 usuarioDTO);
     }
-    //TODO
+
     public Optional<UsuarioEntity> findByEmailAndSenha(String email, String senha){
         return usuarioRepository.findByEmailAndSenha(email, senha);
     }
