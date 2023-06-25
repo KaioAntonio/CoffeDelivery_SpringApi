@@ -1,5 +1,6 @@
 package com.singular.coffedelivery.controller;
 
+import com.singular.coffedelivery.controller.interfaces.UsuarioControllerInterface;
 import com.singular.coffedelivery.dto.PageDTO;
 import com.singular.coffedelivery.dto.usuario.UsuarioCreateDTO;
 import com.singular.coffedelivery.dto.usuario.UsuarioDTO;
@@ -19,24 +20,24 @@ import javax.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("usuario")
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerInterface {
     private final UsuarioService usuarioService;
 
 
-    @GetMapping("/list_users")
+    @Override
     public ResponseEntity<PageDTO<UsuarioDTO>> listUsers(Integer pagina, Integer tamanho){
         return new ResponseEntity<>(usuarioService.listUsers(pagina,tamanho), HttpStatus.OK);
     }
 
-    @GetMapping("/list_by_id/{id}")
+    @Override
     public ResponseEntity<UsuarioDTO> findById(@PathVariable("id") Integer idUsuario) throws RegraDeNegocioException {
         return new ResponseEntity<>(usuarioService.findByIdDto(idUsuario),HttpStatus.OK);
     }
-    @PostMapping("/create")
+    @Override
     public ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO) {
         return new ResponseEntity<>(usuarioService.create(usuarioCreateDTO), HttpStatus.CREATED);
     }
-    @PutMapping("/update/{id}")
+    @Override
     public ResponseEntity<UsuarioDTO> updateUser(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @PathVariable("id") Integer idUsuario) throws RegraDeNegocioException {
         return new ResponseEntity<>(usuarioService.update(idUsuario,usuarioCreateDTO), HttpStatus.OK);
     }

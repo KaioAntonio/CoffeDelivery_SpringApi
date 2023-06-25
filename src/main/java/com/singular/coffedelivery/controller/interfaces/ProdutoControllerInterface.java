@@ -26,7 +26,7 @@ public interface ProdutoControllerInterface {
             }
     )
     @PostMapping()
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: " +
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
             "<ul>" +
                 "<li>**__nome__**: Nome do Produto.</li>" +
                     "<ul>"+
