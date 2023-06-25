@@ -5,6 +5,7 @@ import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoDTO;
 import com.singular.coffedelivery.exception.RegraDeNegocioException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,34 @@ public interface ProdutoControllerInterface {
             }
     )
     @PostMapping()
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
+            "<ul>" +
+                "<li>**__nome__**: Nome do Produto.</li>" +
+                    "<ul>"+
+                        "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+                        "<li>**O campo não pode ser vazio**</li>" +
+                    "</ul>" +
+                    "</li>" +
+                "<li>**__descricao__**: Descrição do Produto.</li>" +
+                    "<ul>"+
+                        "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+                        "<li>**O campo não pode ser vazio**</li>" +
+                    "</ul>" +
+                "</li>"+
+                "<li>**__tipo__**: Tipo do Produto.</li>" +
+                    "<ul>"+
+                        "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+                        "<li>**O campo não pode ser vazio**</li>" +
+                    "</ul>" +
+                "</li>"+
+                "<li>**__preco__**: Preço do Produto.</li>" +
+                    "<ul>"+
+                        "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+                        "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
+                    "</ul>" +
+                "</li>"+
+            "</ul>"
+            )
     ResponseEntity<ProdutoDTO> create(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO);
 
     @Operation(summary = "Upload da imagem do produto", description = "Upload da imagem do produto")
@@ -36,8 +65,8 @@ public interface ProdutoControllerInterface {
             }
     )
     @PostMapping("/uploadImage")
-    ResponseEntity<FileDTO> uploadImage(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("id") Integer idProduto) throws RegraDeNegocioException;
+    ResponseEntity<FileDTO> uploadImage(@Parameter(description = "Imagem do produto") @RequestParam(value = "file") MultipartFile file,
+                                        @Parameter(description = "Id do produto") @RequestParam("id") Integer idProduto) throws RegraDeNegocioException;
 
 
     @Operation(summary = "Recupear a imagem do produto em base64", description = "Recupear a imagem do produto em base64")
@@ -82,6 +111,34 @@ public interface ProdutoControllerInterface {
             }
     )
     @PutMapping("/{id}")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: " +
+            "<ul>" +
+                "<li>**__nome__**: Nome do Produto.</li>" +
+                "<ul>"+
+                    "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+                    "<li>**O campo não pode ser vazio**</li>" +
+                    "</ul>" +
+                "</li>" +
+                "<li>**__descricao__**: Descrição do Produto.</li>" +
+                    "<ul>"+
+                    "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+                    "<li>**O campo não pode ser vazio**</li>" +
+                    "</ul>" +
+                "</li>"+
+                "<li>**__tipo__**: Tipo do Produto.</li>" +
+                    "<ul>"+
+                    "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+                    "<li>**O campo não pode ser vazio**</li>" +
+                    "</ul>" +
+                "</li>"+
+                "<li>**__preco__**: Preço do Produto.</li>" +
+                    "<ul>"+
+                    "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+                    "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
+                    "</ul>" +
+                "</li>"+
+            "</ul>"
+    )
     ResponseEntity<ProdutoDTO> updateProduct(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
                                              @PathVariable("id") Integer idProduto) throws RegraDeNegocioException;
 
