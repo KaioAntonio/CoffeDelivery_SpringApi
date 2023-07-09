@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 public interface UsuarioControllerInterface {
 
@@ -22,8 +23,8 @@ public interface UsuarioControllerInterface {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/list_users")
-    ResponseEntity<PageDTO<UsuarioDTO>> listUsers(Integer pagina, Integer tamanho);
+    @GetMapping("/buscar")
+    ResponseEntity<PageDTO<UsuarioDTO>> buscar(@NotNull Integer pagina, @NotNull Integer tamanho) throws RegraDeNegocioException;
 
     @Operation(summary = "Lista um único usuário com o parâmetro id passado", description = "Lista um único usuário com o parâmetro id passado")
     @ApiResponses(
@@ -33,8 +34,8 @@ public interface UsuarioControllerInterface {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/list_by_id/{id}")
-    ResponseEntity<UsuarioDTO> findById(@PathVariable("id") Integer idUsuario) throws RegraDeNegocioException;
+    @GetMapping("/buscarPorId/{id}")
+    ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable("id") Integer idUsuario) throws RegraDeNegocioException;
 
     @Operation(summary = "Cria um usuário", description = "Cria um usuário")
     @ApiResponses(
@@ -44,7 +45,7 @@ public interface UsuarioControllerInterface {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/create")
+    @PostMapping("/criar")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
             "<ul>" +
                 "<li>**__email__**: Email do Usuário.</li>" +
@@ -66,7 +67,7 @@ public interface UsuarioControllerInterface {
                     "</ul>" +
                 "</li>"+
             "</ul>")
-    ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO);
+    ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO);
 
 
     @Operation(summary = "Atualiza um usuário", description = "Atualiza um usuário")
@@ -98,8 +99,8 @@ public interface UsuarioControllerInterface {
                     "</ul>" +
                 "</li>"+
             "</ul>")
-    @PutMapping("/update/{id}")
-    ResponseEntity<UsuarioDTO> updateUser(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @PathVariable("id") Integer idUsuario) throws RegraDeNegocioException;
+    @PutMapping("/atualizar/{id}")
+    ResponseEntity<UsuarioDTO> atualizar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @PathVariable("id") Integer idUsuario) throws RegraDeNegocioException;
 
     @Operation(summary = "Deleta um usuário", description = "Deleta um usuário")
     @ApiResponses(
@@ -109,6 +110,6 @@ public interface UsuarioControllerInterface {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @DeleteMapping("/delete/{id}")
-    ResponseEntity<Void> deleteUser(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException;
+    @DeleteMapping("/deletar/{id}")
+    ResponseEntity<Void> deletar(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException;
 }

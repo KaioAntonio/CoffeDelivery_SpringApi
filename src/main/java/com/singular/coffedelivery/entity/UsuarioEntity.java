@@ -34,15 +34,6 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "usuario_cargo",
-        joinColumns = @JoinColumn(name = "id_usuario"),
-        inverseJoinColumns = @JoinColumn(name = "id_cargo")
-    )
-    private List<CargoEntity> cargos;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

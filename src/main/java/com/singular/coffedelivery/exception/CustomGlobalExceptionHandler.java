@@ -1,6 +1,6 @@
-package com.coffidelivery.exceptions;
+package com.singular.coffedelivery.exception;
 
-import com.singular.coffedelivery.exception.RegraDeNegocioException;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

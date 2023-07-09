@@ -44,18 +44,18 @@ public class AuthController implements AuthControllerInterface {
             return new ResponseEntity<>(tokenService.getToken(usuarioEntity), HttpStatus.OK);
         }
         catch (Exception e){
-            throw new RegraDeNegocioException("Erro ao realizar o login!");
+            return new ResponseEntity<>("Erro ao realizar o login!", HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @Override
-    public ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO){
-        return new ResponseEntity<>(usuarioService.create(usuarioCreateDTO), HttpStatus.OK);
+    public ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO){
+        return new ResponseEntity<>(usuarioService.criar(usuarioCreateDTO), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<UsuarioDTO> pegarUsuarioLogado() throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.getLoggedUser(), HttpStatus.OK);
+    public ResponseEntity<UsuarioDTO> buscarUsuarioLogado() throws RegraDeNegocioException {
+        return new ResponseEntity<>(usuarioService.buscarUsuarioLogado(), HttpStatus.OK);
     }
 }
