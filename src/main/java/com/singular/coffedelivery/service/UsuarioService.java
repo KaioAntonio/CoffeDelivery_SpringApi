@@ -28,7 +28,7 @@ public class UsuarioService {
     private final ObjectMapper objectMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public PageDTO<UsuarioDTO> listUsers(Integer pagina, Integer tamanho) {
+    public PageDTO<UsuarioDTO> buscar(Integer pagina, Integer tamanho) throws RegraDeNegocioException {
 
         Pageable solicitacaoPagina = PageRequest.of(pagina, tamanho);
         Page<UsuarioEntity> usuario = usuarioRepository.findAll(solicitacaoPagina);
@@ -43,14 +43,11 @@ public class UsuarioService {
                 usuarioDTO);
     }
 
-    public Optional<UsuarioEntity> findByEmailAndSenha(String email, String senha){
-        return usuarioRepository.findByEmailAndSenha(email, senha);
-    }
-    public Optional<UsuarioEntity> findByEmail(String email){
+    public Optional<UsuarioEntity> buscarPorEmail(String email){
         return usuarioRepository.findByEmail(email);
     }
 
-    public UsuarioDTO create(UsuarioCreateDTO usuarioCreateDTO){
+    public UsuarioDTO criar(UsuarioCreateDTO usuarioCreateDTO){
         UsuarioEntity usuarioEntity = objectMapper.convertValue(usuarioCreateDTO, UsuarioEntity.class);
         String encode = passwordEncoder.encode(usuarioEntity.getSenha());
         usuarioEntity.setSenha(encode);
@@ -60,35 +57,35 @@ public class UsuarioService {
         return usuarioDTO;
     }
 
-    public UsuarioDTO update(Integer idUsuario,UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
-        UsuarioEntity recuperaUsuario = findByIdEntity(idUsuario);
+    public UsuarioDTO atualizar(Integer idUsuario,UsuarioCreateDTO usuarioCreateDTO) throws RegraDeNegocioException {
+        UsuarioEntity recuperaUsuario = buscarPorId(idUsuario);
         recuperaUsuario.setNome(usuarioCreateDTO.getNome());
         usuarioRepository.save(recuperaUsuario);
         return objectMapper.convertValue(recuperaUsuario, UsuarioDTO.class);
     }
 
-    public void delete(Integer idUsuario) throws RegraDeNegocioException {
-        UsuarioEntity usuarioEntity = findByIdEntity(idUsuario);
+    public void deletar(Integer idUsuario) throws RegraDeNegocioException {
+        UsuarioEntity usuarioEntity = buscarPorId(idUsuario);
         usuarioRepository.delete(usuarioEntity);
     }
 
-    public Integer getIdLoggedUser(){
+    public Integer buscarUsuarioLogadoPorId(){
         return Integer.parseInt( (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
-    public UsuarioDTO getLoggedUser() throws RegraDeNegocioException {
-        UsuarioEntity usuarioLogado = findByIdEntity(getIdLoggedUser());
+    public UsuarioDTO buscarUsuarioLogado() throws RegraDeNegocioException {
+        UsuarioEntity usuarioLogado = buscarPorId(buscarUsuarioLogadoPorId());
         return objectMapper.convertValue(usuarioLogado,UsuarioDTO.class);
     }
 
-    public UsuarioEntity findByIdEntity(Integer idUsuario) throws RegraDeNegocioException{
+    public UsuarioEntity buscarPorId(Integer idUsuario) throws RegraDeNegocioException{
         return usuarioRepository.findById(idUsuario)
                 .orElseThrow(() ->
                         new RegraDeNegocioException("Usuario nao encontrado"));
 
     }
 
-    public UsuarioDTO findByIdDto(Integer idUsuario) throws RegraDeNegocioException{
+    public UsuarioDTO buscarPorIdDto(Integer idUsuario) throws RegraDeNegocioException{
         UsuarioEntity usuarioEntity = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() ->
                         new RegraDeNegocioException("Usuario nao encontrado"));

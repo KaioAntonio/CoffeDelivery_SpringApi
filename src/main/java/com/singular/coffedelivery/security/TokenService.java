@@ -1,6 +1,5 @@
 package com.singular.coffedelivery.security;
 
-import com.singular.coffedelivery.entity.CargoEntity;
 import com.singular.coffedelivery.entity.UsuarioEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,14 +31,10 @@ public class TokenService {
         Date nowDT = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
         Date expDT = Date.from(now.plusDays(Long.parseLong(expiration)).atZone(ZoneId.systemDefault()).toInstant());
 
-        List<String> cargosUsuarios = usuarioEntity.getCargos()
-                .stream()
-                .map(CargoEntity::getAuthority)
-                .collect(Collectors.toList());
+
         return Jwts.builder()
-                .setIssuer("scanner-api")
+                .setIssuer("coffe-api")
                 .claim(Claims.ID, usuarioEntity.getIdUsuario().toString())
-                .claim(KEY_CARGOS, cargosUsuarios)
                 .setIssuedAt(nowDT)
                 .setExpiration(expDT)
                 .signWith(SignatureAlgorithm.HS256, secret)
@@ -55,16 +51,13 @@ public class TokenService {
                     .getBody();
 
             String idUsuario = chaves.get(Claims.ID, String.class);
-            List<String> cargos = chaves.get(KEY_CARGOS, List.class);
 
-            List<SimpleGrantedAuthority> listaDeCargos = cargos.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
 
             UsernamePasswordAuthenticationToken userDTO = new UsernamePasswordAuthenticationToken(
                     idUsuario,
                     null,
-                    listaDeCargos
+                    Collections.emptyList()
+
             );
 
             return userDTO;

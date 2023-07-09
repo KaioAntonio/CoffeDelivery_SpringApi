@@ -38,7 +38,7 @@ public interface AuthControllerInterface {
             }
     )
     @PostMapping("/criar")
-    ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO);
+    ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO);
 
     @Operation(summary = "Buscar usuário logado", description = "Buscar usuário logado")
     @ApiResponses(
@@ -48,7 +48,7 @@ public interface AuthControllerInterface {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @GetMapping("/logged")
-    ResponseEntity<UsuarioDTO> pegarUsuarioLogado() throws RegraDeNegocioException;
+    @GetMapping("/usuarioLogado")
+    ResponseEntity<UsuarioDTO> buscarUsuarioLogado() throws RegraDeNegocioException;
 
 }
