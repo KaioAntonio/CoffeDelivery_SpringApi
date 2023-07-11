@@ -67,7 +67,7 @@ public class ProdutoController {
             "</ul>"
     )
     public ResponseEntity<ProdutoDTO> criar(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO) {
-        return new ResponseEntity<>(produtoService.create(produtoCreateDTO), HttpStatus.OK);
+        return new ResponseEntity<>(produtoService.criar(produtoCreateDTO), HttpStatus.OK);
     }
 
     @Operation(summary = "Upload da imagem do produto", description = "Upload da imagem do produto")
@@ -107,7 +107,7 @@ public class ProdutoController {
     )
     @GetMapping("/buscarPorId/{id}")
     public ResponseEntity<ProdutoDTO> buscarPorId(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(produtoService.findById(idProduto), HttpStatus.OK);
+        return new ResponseEntity<>(produtoService.buscarPorId(idProduto), HttpStatus.OK);
     }
 
     @Operation(summary = "Lista todos os produtos", description = "Lista todos os produtos")
@@ -120,7 +120,7 @@ public class ProdutoController {
     )
     @GetMapping("/buscar")
     public ResponseEntity<List<ProdutoDTO>> buscar(){
-        return new ResponseEntity<>(produtoService.list(), HttpStatus.OK);
+        return new ResponseEntity<>(produtoService.buscar(), HttpStatus.OK);
     }
 
     @Operation(summary = "Atualiza o produto por id", description = "Atualiza o produto por id")
@@ -162,7 +162,7 @@ public class ProdutoController {
     @PutMapping("/atualizar/{id}")
     public ResponseEntity<ProdutoDTO> atualizar(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
                                                     @PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(produtoService.update(produtoCreateDTO, idProduto), HttpStatus.OK);
+        return new ResponseEntity<>(produtoService.atualizar(produtoCreateDTO, idProduto), HttpStatus.OK);
     }
 
     @Operation(summary = "Deleta o produto por id", description = "Deleta o produto por id")
