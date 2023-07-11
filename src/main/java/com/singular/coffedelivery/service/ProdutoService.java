@@ -19,14 +19,14 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
     private final ObjectMapper objectMapper;
 
-    public ProdutoDTO create(ProdutoCreateDTO produtoCreateDTO){
+    public ProdutoDTO criar(ProdutoCreateDTO produtoCreateDTO){
         ProdutoEntity produto = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
         produto.setSituacao(Situacao.ATIVO);
         produtoRepository.save(produto);
         return objectMapper.convertValue(produto,ProdutoDTO.class);
     }
 
-    public ProdutoDTO findById(Integer id) throws RegraDeNegocioException {
+    public ProdutoDTO buscarPorId(Integer id) throws RegraDeNegocioException {
         ProdutoDTO produtoDTO = objectMapper.convertValue(produtoRepository.findById(id)
                 .orElseThrow(() ->  new RegraDeNegocioException("Produto não foi encontrado!")),
                 ProdutoDTO.class);
@@ -34,16 +34,16 @@ public class ProdutoService {
 
     }
 
-    public List<ProdutoDTO> list() {
+    public List<ProdutoDTO> buscar() {
         return produtoRepository.findAll()
                 .stream()
                 .map(produtoEntity -> objectMapper.convertValue(produtoEntity, ProdutoDTO.class))
                 .collect(Collectors.toList());
     }
 
-    public ProdutoDTO update(ProdutoCreateDTO produtoCreateDTO, Integer idProduto) throws RegraDeNegocioException {
+    public ProdutoDTO atualizar(ProdutoCreateDTO produtoCreateDTO, Integer idProduto) throws RegraDeNegocioException {
         ProdutoEntity produtoAntigo = objectMapper.convertValue(
-                findById(idProduto), ProdutoEntity.class);
+                buscarPorId(idProduto), ProdutoEntity.class);
 
         produtoAntigo.setDescricao(produtoCreateDTO.getDescricao());
         produtoAntigo.setTipo(produtoCreateDTO.getTipo());
@@ -58,7 +58,7 @@ public class ProdutoService {
 
     public void delete(Integer idProduto) throws RegraDeNegocioException {
         ProdutoEntity produto = objectMapper.convertValue(
-                findById(idProduto), ProdutoEntity.class);
+                buscarPorId(idProduto), ProdutoEntity.class);
         produto.setSituacao(Situacao.INATIVO);
         produtoRepository.save(produto);
 
