@@ -26,7 +26,7 @@ public class FileService {
 
     public FileDTO store(MultipartFile file, Integer id) throws RegraDeNegocioException {
         try {
-            ProdutoDTO produto = produtoService.findById(id);
+            ProdutoDTO produto = produtoService.buscarPorId(id);
             ProdutoEntity produtoEntity = objectMapper.convertValue(produto, ProdutoEntity.class);
             FileEntity fileEntityExiste = fileRepository.findFileEntitiesByProduto(produtoEntity);
             FileEntity fileDB = new FileEntity();
@@ -48,7 +48,7 @@ public class FileService {
     }
 
     public String getImage(Integer id) throws RegraDeNegocioException {
-        ProdutoDTO produto = produtoService.findById(id);
+        ProdutoDTO produto = produtoService.buscarPorId(id);
         ProdutoEntity produtoEntity = objectMapper.convertValue(produto, ProdutoEntity.class);
         FileEntity fileEntity = fileRepository.findByProduto(produtoEntity)
                 .orElseThrow(() -> new RegraDeNegocioException("Imagem não encontrada ou não existe."));
