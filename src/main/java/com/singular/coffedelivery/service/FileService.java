@@ -69,7 +69,7 @@ public class FileService {
         for (ProdutoDTO p:
              produtoDTOList) {
             String imagem = getImage(p.getIdProduto());
-            p.setImage(imagem);
+            p.setImagem(imagem);
         }
         return produtoDTOList;
     }
