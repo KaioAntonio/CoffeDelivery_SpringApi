@@ -2,13 +2,7 @@ package com.singular.coffedelivery.dto.produto;
 import lombok.Data;
 
 @Data
-public class FileDTO {
-
-    private Integer idFile;
-
-    private String name;
-
-    private String type;
+public class FileDTO extends ProdutoCreateDTO{
 
     private byte[] data;
 }

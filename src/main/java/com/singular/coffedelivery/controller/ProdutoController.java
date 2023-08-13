@@ -1,5 +1,7 @@
 package com.singular.coffedelivery.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.singular.coffedelivery.dto.produto.FileDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoDTO;
@@ -28,6 +30,7 @@ import java.util.List;
 public class ProdutoController {
     private final ProdutoService produtoService;
     private final FileService fileService;
+    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Cria um produto", description = "Cria um produto")
     @ApiResponses(
@@ -37,8 +40,10 @@ public class ProdutoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @PostMapping("/criar")
+    @PostMapping(value = "/criar", consumes = {"multipart/form-data"})
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
+            "**Obs: o campo de entrada 'produto' recebe uma string e deverá ser passada como esse exemplo: <br>" +
+            "- {\"nome\":\"Cafézinho\",\"descricao\":\"Café barato\",\"tipo\":\"quente\",\"preco\":5.50}" +
             "<ul>" +
             "<li>**__nome__**: Nome do Produto.</li>" +
             "<ul>"+
@@ -63,39 +68,20 @@ public class ProdutoController {
             "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
             "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
             "</ul>" +
+            "<li>**__file__**: Imagem do Produto.</li>" +
+            "<ul>"+
+            "<li>**Arquivo tem que ser uma imagem.**</li>" +
+            "</ul>" +
             "</li>"+
             "</ul>"
     )
-    public ResponseEntity<ProdutoDTO> criar(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO) {
-        return new ResponseEntity<>(produtoService.criar(produtoCreateDTO), HttpStatus.OK);
+    public ResponseEntity<FileDTO> criar(@RequestParam(value = "file", required = false) MultipartFile file,
+                                               @RequestPart("produto") @Valid String produto) throws RegraDeNegocioException, JsonProcessingException {
+        ProdutoCreateDTO produtoCreateDTO = objectMapper.readValue(produto, ProdutoCreateDTO.class);
+        ProdutoDTO produtoDTO = produtoService.criar(produtoCreateDTO);
+        return new ResponseEntity<>(fileService.store(file, produtoDTO.getIdProduto()), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Upload da imagem do produto", description = "Upload da imagem do produto")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Upload da imagem do produto"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @PostMapping("/criarImagem")
-    public ResponseEntity<FileDTO> uploadImage(@RequestParam("file") MultipartFile file,
-                                               @RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(fileService.store(file,idProduto), HttpStatus.CREATED);
-    }
-
-    @Operation(summary = "Busca a imagem do produto em base64", description = "Busca a imagem do produto em base64")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Recupear a imagem do produto em base64"),
-                    @ApiResponse(responseCode = "403", description = "Você não tem permissão para acessar este recurso"),
-                    @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
-            }
-    )
-    @GetMapping("/buscarImagem")
-    public ResponseEntity<String> buscarImagem(@RequestParam("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(fileService.getImage(idProduto), HttpStatus.OK);
-    }
 
     @Operation(summary = "Lista os produtos por id", description = "Lista os produtos por id")
     @ApiResponses(
@@ -107,7 +93,9 @@ public class ProdutoController {
     )
     @GetMapping("/buscarPorId/{id}")
     public ResponseEntity<ProdutoDTO> buscarPorId(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(produtoService.buscarPorId(idProduto), HttpStatus.OK);
+        ProdutoDTO produtoDTO = produtoService.buscarPorId(idProduto);
+        produtoDTO.setImage(fileService.getImage(idProduto));
+        return new ResponseEntity<>(produtoDTO, HttpStatus.OK);
     }
 
     @Operation(summary = "Lista todos os produtos", description = "Lista todos os produtos")
@@ -119,8 +107,8 @@ public class ProdutoController {
             }
     )
     @GetMapping("/buscar")
-    public ResponseEntity<List<ProdutoDTO>> buscar(){
-        return new ResponseEntity<>(produtoService.buscar(), HttpStatus.OK);
+    public ResponseEntity<List<ProdutoDTO>> buscar() throws RegraDeNegocioException {
+        return new ResponseEntity<>(fileService.getProductsAllImages(), HttpStatus.OK);
     }
 
     @Operation(summary = "Atualiza o produto por id", description = "Atualiza o produto por id")
@@ -131,7 +119,9 @@ public class ProdutoController {
                     @ApiResponse(responseCode = "500", description = "Foi gerada uma exceção")
             }
     )
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: " +
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
+            "**Obs: o campo de entrada 'produto' recebe uma string e deverá ser passada como esse exemplo: <br>" +
+            "- {\"nome\":\"Cafézinho\",\"descricao\":\"Café barato\",\"tipo\":\"quente\",\"preco\":5.50}" +
             "<ul>" +
             "<li>**__nome__**: Nome do Produto.</li>" +
             "<ul>"+
@@ -156,13 +146,20 @@ public class ProdutoController {
             "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
             "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
             "</ul>" +
+            "<li>**__file__**: Imagem do Produto.</li>" +
+            "<ul>"+
+            "<li>**Arquivo tem que ser uma imagem.**</li>" +
+            "</ul>" +
             "</li>"+
             "</ul>"
     )
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<ProdutoDTO> atualizar(@RequestBody @Valid ProdutoCreateDTO produtoCreateDTO,
-                                                    @PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
-        return new ResponseEntity<>(produtoService.atualizar(produtoCreateDTO, idProduto), HttpStatus.OK);
+    @PutMapping(value = "/atualizar", consumes = {"multipart/form-data"})
+    public ResponseEntity<FileDTO> atualizar(@RequestPart("produto") @Valid String produto,
+                                                    @RequestParam("id") Integer idProduto,
+                                                @RequestParam(value = "file", required = false) MultipartFile file) throws RegraDeNegocioException, JsonProcessingException {
+        ProdutoCreateDTO produtoCreateDTO = objectMapper.readValue(produto, ProdutoCreateDTO.class);
+        produtoService.atualizar(produtoCreateDTO, idProduto);
+        return new ResponseEntity<>(fileService.store(file, idProduto), HttpStatus.OK);
     }
 
     @Operation(summary = "Deleta o produto por id", description = "Deleta o produto por id")
