@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ProdutoDTO extends ProdutoCreateDTO{
-    private Integer idProduto;
+    private String image;
 }

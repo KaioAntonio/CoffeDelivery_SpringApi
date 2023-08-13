@@ -7,6 +7,8 @@ import javax.validation.constraints.*;
 
 @Data
 public class ProdutoCreateDTO {
+
+    private Integer idProduto;
     @NotBlank
     @Schema(description = "Nome do Produto", example = "Café Expresso")
     @Size(max = 255)

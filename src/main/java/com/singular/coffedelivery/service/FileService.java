@@ -13,6 +13,8 @@ import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -41,8 +43,14 @@ public class FileService {
             fileDB.setProduto(produtoEntity);
             FileEntity fileEntity = fileRepository.save(fileDB);
             FileDTO fileDTO = objectMapper.convertValue(fileEntity, FileDTO.class);
+            fileDTO.setNome(produto.getNome());
+            fileDTO.setDescricao(produto.getDescricao());
+            fileDTO.setPreco(produto.getPreco());
+            fileDTO.setTipo(produto.getTipo());
+            fileDTO.setIdProduto(produto.getIdProduto());
             return fileDTO;
         } catch (Exception e) {
+            produtoService.delete(id);
             throw new RegraDeNegocioException("Ocorreu um erro ao enviar a imagem!");
         }
     }
@@ -54,6 +62,16 @@ public class FileService {
                 .orElseThrow(() -> new RegraDeNegocioException("Imagem não encontrada ou não existe."));
         return Base64Utils.encodeToString(fileEntity.getData());
 
+    }
+
+    public List<ProdutoDTO> getProductsAllImages() throws RegraDeNegocioException {
+        List<ProdutoDTO> produtoDTOList = produtoService.buscar();
+        for (ProdutoDTO p:
+             produtoDTOList) {
+            String imagem = getImage(p.getIdProduto());
+            p.setImage(imagem);
+        }
+        return produtoDTOList;
     }
 
 }
