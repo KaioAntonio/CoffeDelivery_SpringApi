@@ -10,6 +10,7 @@ import com.singular.coffedelivery.repository.ProdutoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class ProdutoService {
     public ProdutoDTO criar(ProdutoCreateDTO produtoCreateDTO){
         ProdutoEntity produto = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
         produto.setSituacao(Situacao.ATIVO);
+        produto.setDtCriacao(LocalDateTime.now());
         produtoRepository.save(produto);
         return objectMapper.convertValue(produto,ProdutoDTO.class);
     }

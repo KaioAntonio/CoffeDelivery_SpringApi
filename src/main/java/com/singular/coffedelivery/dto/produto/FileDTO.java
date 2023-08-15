@@ -4,5 +4,5 @@ import lombok.Data;
 @Data
 public class FileDTO extends ProdutoCreateDTO{
 
-    private byte[] data;
+    private byte[] imagem;
 }

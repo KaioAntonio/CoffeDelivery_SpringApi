@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity(name = "produto")
 @Getter
@@ -35,6 +36,9 @@ public class ProdutoEntity {
 
     @Column(name = "situacao")
     private Situacao situacao;
+
+    @Column(name = "dtCriacao")
+    private LocalDateTime dtCriacao;
 
     @JsonIgnore
     @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

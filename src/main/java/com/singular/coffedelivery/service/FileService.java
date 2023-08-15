@@ -38,7 +38,7 @@ public class FileService {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             fileDB.setName(fileName);
             fileDB.setType(file.getContentType());
-            fileDB.setData(file.getBytes());
+            fileDB.setImagem(file.getBytes());
 
             fileDB.setProduto(produtoEntity);
             FileEntity fileEntity = fileRepository.save(fileDB);
@@ -48,6 +48,8 @@ public class FileService {
             fileDTO.setPreco(produto.getPreco());
             fileDTO.setTipo(produto.getTipo());
             fileDTO.setIdProduto(produto.getIdProduto());
+            fileDTO.setSituacao(produto.getSituacao());
+            fileDTO.setDtCriacao(produto.getDtCriacao());
             return fileDTO;
         } catch (Exception e) {
             produtoService.delete(id);
@@ -60,7 +62,7 @@ public class FileService {
         ProdutoEntity produtoEntity = objectMapper.convertValue(produto, ProdutoEntity.class);
         FileEntity fileEntity = fileRepository.findByProduto(produtoEntity)
                 .orElseThrow(() -> new RegraDeNegocioException("Imagem não encontrada ou não existe."));
-        return Base64Utils.encodeToString(fileEntity.getData());
+        return Base64Utils.encodeToString(fileEntity.getImagem());
 
     }
 
