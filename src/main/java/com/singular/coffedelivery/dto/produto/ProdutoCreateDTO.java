@@ -1,9 +1,11 @@
 package com.singular.coffedelivery.dto.produto;
 
+import com.singular.coffedelivery.enums.Situacao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 
 @Data
 public class ProdutoCreateDTO {
@@ -26,5 +28,12 @@ public class ProdutoCreateDTO {
     @DecimalMin(value = "0.01", inclusive = true)
     @DecimalMax(value = "9999.99")
     private Double preco;
+    @NotNull
+    @Schema(description = "Situação do Produto",example = "0")
+    @Size(max = 1)
+    private Situacao situacao;
+    @NotNull
+    @Schema(description = "Data de criação do Produto",example = "13/05/2022 20:00")
+    private LocalDateTime dtCriacao;
 
 }

@@ -1,5 +1,6 @@
 package com.singular.coffedelivery.controller;
 
+import com.singular.coffedelivery.config.responses.ResultUtilSucess;
 import com.singular.coffedelivery.dto.PageDTO;
 import com.singular.coffedelivery.dto.usuario.UsuarioCreateDTO;
 import com.singular.coffedelivery.dto.usuario.UsuarioDTO;
@@ -35,8 +36,8 @@ public class UsuarioController {
             }
     )
     @GetMapping("/buscar")
-    public ResponseEntity<PageDTO<UsuarioDTO>> buscar(@NotNull Integer pagina, @NotNull Integer tamanho) throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.buscar(pagina,tamanho), HttpStatus.OK);
+    public ResponseEntity<ResultUtilSucess> buscar(@NotNull Integer pagina, @NotNull Integer tamanho) throws RegraDeNegocioException {
+        return new ResponseEntity<>(new ResultUtilSucess(usuarioService.buscar(pagina,tamanho)), HttpStatus.OK);
     }
 
     @Operation(summary = "Lista um único usuário com o parâmetro id passado", description = "Lista um único usuário com o parâmetro id passado")
@@ -48,8 +49,8 @@ public class UsuarioController {
             }
     )
     @GetMapping("/buscarPorId/{id}")
-    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable("id") Integer idUsuario) throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.buscarPorIdDto(idUsuario),HttpStatus.OK);
+    public ResponseEntity<ResultUtilSucess> buscarPorId(@PathVariable("id") Integer idUsuario) throws RegraDeNegocioException {
+        return new ResponseEntity<>(new ResultUtilSucess(usuarioService.buscarPorIdDto(idUsuario)),HttpStatus.OK);
     }
 
     @Operation(summary = "Cria um usuário", description = "Cria um usuário")
@@ -82,8 +83,8 @@ public class UsuarioController {
             "</ul>" +
             "</li>"+
             "</ul>")
-    public ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO) {
-        return new ResponseEntity<>(usuarioService.criar(usuarioCreateDTO), HttpStatus.CREATED);
+    public ResponseEntity<ResultUtilSucess> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO) {
+        return new ResponseEntity<>(new ResultUtilSucess(usuarioService.criar(usuarioCreateDTO)), HttpStatus.CREATED);
     }
     @Operation(summary = "Atualiza um usuário", description = "Atualiza um usuário")
     @ApiResponses(
@@ -115,8 +116,8 @@ public class UsuarioController {
             "</li>"+
             "</ul>")
     @PutMapping("/atualizar/{id}")
-    public ResponseEntity<UsuarioDTO> atualizar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @PathVariable("id") Integer idUsuario) throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.atualizar(idUsuario,usuarioCreateDTO), HttpStatus.OK);
+    public ResponseEntity<ResultUtilSucess> atualizar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @PathVariable("id") Integer idUsuario) throws RegraDeNegocioException {
+        return new ResponseEntity<>(new ResultUtilSucess(usuarioService.atualizar(idUsuario,usuarioCreateDTO)), HttpStatus.OK);
     }
 
     @Operation(summary = "Deleta um usuário", description = "Deleta um usuário")
@@ -128,7 +129,7 @@ public class UsuarioController {
             }
     )
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+    public ResponseEntity<ResultUtilSucess> deletar(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
         usuarioService.deletar(idProduto);
         return ResponseEntity.ok().build();
     }

@@ -1,6 +1,7 @@
 package com.singular.coffedelivery.controller;
 
 
+import com.singular.coffedelivery.config.responses.ResultUtilSucess;
 import com.singular.coffedelivery.dto.usuario.UsuarioDTO;
 import com.singular.coffedelivery.entity.UsuarioEntity;
 import com.singular.coffedelivery.dto.usuario.UsuarioCreateDTO;
@@ -42,17 +43,17 @@ public class AuthController {
             }
     )
     @PostMapping
-    public ResponseEntity<String> auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
+    public ResponseEntity<ResultUtilSucess> auth(@RequestBody @Valid LoginDTO loginDTO) throws RegraDeNegocioException {
         try {
             UsernamePasswordAuthenticationToken userAuthDTO = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),
                     loginDTO.getSenha());
             Authentication authentication = authenticationManager.authenticate(userAuthDTO);
             Object principal = authentication.getPrincipal();
             UsuarioEntity usuarioEntity = (UsuarioEntity) principal;
-            return new ResponseEntity<>(tokenService.getToken(usuarioEntity), HttpStatus.OK);
+            return new ResponseEntity<>(new ResultUtilSucess(tokenService.getToken(usuarioEntity)), HttpStatus.OK);
         }
         catch (Exception e){
-            return new ResponseEntity<>("Erro ao realizar o login!", HttpStatus.BAD_REQUEST);
+            throw new RegraDeNegocioException("Erro ao realizar o login!");
         }
 
     }
@@ -66,8 +67,8 @@ public class AuthController {
             }
     )
     @PostMapping("/criar")
-    public ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO){
-        return new ResponseEntity<>(usuarioService.criar(usuarioCreateDTO), HttpStatus.OK);
+    public ResponseEntity<ResultUtilSucess> criar(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO){
+        return new ResponseEntity<>(new ResultUtilSucess(usuarioService.criar(usuarioCreateDTO)), HttpStatus.OK);
     }
 
     @Operation(summary = "Buscar usuário logado", description = "Buscar usuário logado")
@@ -79,7 +80,7 @@ public class AuthController {
             }
     )
     @GetMapping("/usuarioLogado")
-    public ResponseEntity<UsuarioDTO> buscarUsuarioLogado() throws RegraDeNegocioException {
-        return new ResponseEntity<>(usuarioService.buscarUsuarioLogado(), HttpStatus.OK);
+    public ResponseEntity<ResultUtilSucess> buscarUsuarioLogado() throws RegraDeNegocioException {
+        return new ResponseEntity<>(new ResultUtilSucess(usuarioService.buscarUsuarioLogado()), HttpStatus.OK);
     }
 }

@@ -2,7 +2,7 @@ package com.singular.coffedelivery.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.singular.coffedelivery.config.responses.RespostaSucesso;
+import com.singular.coffedelivery.config.responses.ResultUtilSucess;
 import com.singular.coffedelivery.dto.produto.FileDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoDTO;
@@ -76,14 +76,13 @@ public class ProdutoController {
             "</li>"+
             "</ul>"
     )
-    public ResponseEntity<RespostaSucesso> criar(@RequestParam(value = "file", required = false) MultipartFile file,
-                                               @RequestPart("produto") @Valid String produto) throws RegraDeNegocioException, JsonProcessingException {
+    public ResponseEntity<ResultUtilSucess> criar(@RequestParam(value = "file", required = false) MultipartFile file,
+                                                  @RequestPart("produto") @Valid String produto) throws RegraDeNegocioException, JsonProcessingException {
         ProdutoCreateDTO produtoCreateDTO = objectMapper.readValue(produto, ProdutoCreateDTO.class);
         ProdutoDTO produtoDTO = produtoService.criar(produtoCreateDTO);
-        fileService.store(file, produtoDTO.getIdProduto());
-        return new ResponseEntity<>(new RespostaSucesso(produtoDTO), HttpStatus.CREATED);
+        FileDTO fileDTO = fileService.store(file, produtoDTO.getIdProduto());
+        return new ResponseEntity<>(new ResultUtilSucess(fileDTO), HttpStatus.CREATED);
     }
-
 
     @Operation(summary = "Lista os produtos por id", description = "Lista os produtos por id")
     @ApiResponses(
@@ -94,10 +93,10 @@ public class ProdutoController {
             }
     )
     @GetMapping("/buscarPorId/{id}")
-    public ResponseEntity<RespostaSucesso> buscarPorId(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+    public ResponseEntity<ResultUtilSucess> buscarPorId(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
         ProdutoDTO produtoDTO = produtoService.buscarPorId(idProduto);
         produtoDTO.setImagem(fileService.getImage(idProduto));
-        return new ResponseEntity<>(new RespostaSucesso(produtoDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new ResultUtilSucess(produtoDTO), HttpStatus.OK);
     }
 
     @Operation(summary = "Lista todos os produtos", description = "Lista todos os produtos")
@@ -109,9 +108,9 @@ public class ProdutoController {
             }
     )
     @GetMapping("/buscar")
-    public ResponseEntity<RespostaSucesso> buscar() throws RegraDeNegocioException {
+    public ResponseEntity<ResultUtilSucess> buscar() throws RegraDeNegocioException {
         List<ProdutoDTO> produtoDTOList = fileService.getProductsAllImages();
-        return new ResponseEntity<>(new RespostaSucesso(produtoDTOList), HttpStatus.OK);
+        return new ResponseEntity<>(new ResultUtilSucess(produtoDTOList), HttpStatus.OK);
     }
 
     @Operation(summary = "Atualiza o produto por id", description = "Atualiza o produto por id")
@@ -157,13 +156,13 @@ public class ProdutoController {
             "</ul>"
     )
     @PutMapping(value = "/atualizar", consumes = {"multipart/form-data"})
-    public ResponseEntity<RespostaSucesso> atualizar(@RequestPart("produto") @Valid String produto,
-                                                    @RequestParam("id") Integer idProduto,
-                                                @RequestParam(value = "file", required = false) MultipartFile file) throws RegraDeNegocioException, JsonProcessingException {
+    public ResponseEntity<ResultUtilSucess> atualizar(@RequestPart("produto") @Valid String produto,
+                                                      @RequestParam("id") Integer idProduto,
+                                                      @RequestParam(value = "file", required = false) MultipartFile file) throws RegraDeNegocioException, JsonProcessingException {
         ProdutoCreateDTO produtoCreateDTO = objectMapper.readValue(produto, ProdutoCreateDTO.class);
         produtoService.atualizar(produtoCreateDTO, idProduto);
         FileDTO fileDTO = fileService.store(file, idProduto);
-        return new ResponseEntity<>(new RespostaSucesso(fileDTO), HttpStatus.OK);
+        return new ResponseEntity<>(new ResultUtilSucess(fileDTO), HttpStatus.OK);
     }
 
     @Operation(summary = "Deleta o produto por id", description = "Deleta o produto por id")
@@ -175,8 +174,8 @@ public class ProdutoController {
             }
     )
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<RespostaSucesso> deletar(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
+    public ResponseEntity<ResultUtilSucess> deletar(@PathVariable("id") Integer idProduto) throws RegraDeNegocioException {
         produtoService.delete(idProduto);
-        return new ResponseEntity<>(new RespostaSucesso(null), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(new ResultUtilSucess(null), HttpStatus.NO_CONTENT);
     }
 }

@@ -29,7 +29,7 @@ public class FileEntity {
 
     @Column(name = "dado")
     @Lob
-    private byte[] data;
+    private byte[] imagem;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
