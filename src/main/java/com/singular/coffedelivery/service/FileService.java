@@ -50,6 +50,7 @@ public class FileService {
             fileDTO.setIdProduto(produto.getIdProduto());
             fileDTO.setSituacao(produto.getSituacao());
             fileDTO.setDtCriacao(produto.getDtCriacao());
+            fileDTO.setQtProduto(produto.getQtProduto());
             return fileDTO;
         } catch (Exception e) {
             produtoService.delete(id);

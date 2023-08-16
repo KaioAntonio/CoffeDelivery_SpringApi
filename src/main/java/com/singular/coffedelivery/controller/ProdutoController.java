@@ -6,6 +6,7 @@ import com.singular.coffedelivery.config.responses.ResultUtilSucess;
 import com.singular.coffedelivery.dto.produto.FileDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
 import com.singular.coffedelivery.dto.produto.ProdutoDTO;
+import com.singular.coffedelivery.entity.ProdutoEntity;
 import com.singular.coffedelivery.exception.RegraDeNegocioException;
 import com.singular.coffedelivery.service.FileService;
 import com.singular.coffedelivery.service.ProdutoService;
@@ -43,8 +44,6 @@ public class ProdutoController {
     )
     @PostMapping(value = "/criar", consumes = {"multipart/form-data"})
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
-            "**Obs: o campo de entrada 'produto' recebe uma string e deverá ser passada como esse exemplo: <br>" +
-            "- {\"nome\":\"Cafézinho\",\"descricao\":\"Café barato\",\"tipo\":\"quente\",\"preco\":5.50}" +
             "<ul>" +
             "<li>**__nome__**: Nome do Produto.</li>" +
             "<ul>"+
@@ -69,6 +68,11 @@ public class ProdutoController {
             "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
             "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
             "</ul>" +
+            "<li>**__qtProduto__**: Quantidade em estoque do Produto.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+            "<li>**O valor mínimo é 0 e máximo 9999**</li>" +
+            "</ul>" +
             "<li>**__file__**: Imagem do Produto.</li>" +
             "<ul>"+
             "<li>**Arquivo tem que ser uma imagem.**</li>" +
@@ -77,8 +81,18 @@ public class ProdutoController {
             "</ul>"
     )
     public ResponseEntity<ResultUtilSucess> criar(@RequestParam(value = "file", required = false) MultipartFile file,
-                                                  @RequestPart("produto") @Valid String produto) throws RegraDeNegocioException, JsonProcessingException {
-        ProdutoCreateDTO produtoCreateDTO = objectMapper.readValue(produto, ProdutoCreateDTO.class);
+                                                  @RequestParam("nome") @Valid String nome,
+                                                  @RequestParam("descricao") @Valid String descricao,
+                                                  @RequestParam("tipo") @Valid String tipo,
+                                                  @RequestParam("preco") @Valid Double preco,
+                                                  @RequestParam("qtProduto") @Valid Integer qtProduto
+                                                  ) throws RegraDeNegocioException {
+        ProdutoCreateDTO produtoCreateDTO = new ProdutoCreateDTO();
+        produtoCreateDTO.setNome(nome);
+        produtoCreateDTO.setDescricao(descricao);
+        produtoCreateDTO.setPreco(preco);
+        produtoCreateDTO.setTipo(tipo);
+        produtoCreateDTO.setQtProduto(qtProduto);
         ProdutoDTO produtoDTO = produtoService.criar(produtoCreateDTO);
         FileDTO fileDTO = fileService.store(file, produtoDTO.getIdProduto());
         return new ResponseEntity<>(new ResultUtilSucess(fileDTO), HttpStatus.CREATED);
@@ -122,8 +136,6 @@ public class ProdutoController {
             }
     )
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
-            "**Obs: o campo de entrada 'produto' recebe uma string e deverá ser passada como esse exemplo: <br>" +
-            "- {\"nome\":\"Cafézinho\",\"descricao\":\"Café barato\",\"tipo\":\"quente\",\"preco\":5.50}" +
             "<ul>" +
             "<li>**__nome__**: Nome do Produto.</li>" +
             "<ul>"+
@@ -148,6 +160,11 @@ public class ProdutoController {
             "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
             "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
             "</ul>" +
+            "<li>**__qtProduto__**: Quantidade em estoque do Produto.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+            "<li>**O valor mínimo é 0 e máximo 9999**</li>" +
+            "</ul>" +
             "<li>**__file__**: Imagem do Produto.</li>" +
             "<ul>"+
             "<li>**Arquivo tem que ser uma imagem.**</li>" +
@@ -156,10 +173,19 @@ public class ProdutoController {
             "</ul>"
     )
     @PutMapping(value = "/atualizar", consumes = {"multipart/form-data"})
-    public ResponseEntity<ResultUtilSucess> atualizar(@RequestPart("produto") @Valid String produto,
+    public ResponseEntity<ResultUtilSucess> atualizar(@RequestParam("nome") @Valid String nome,
+                                                      @RequestParam("descricao") @Valid String descricao,
+                                                      @RequestParam("tipo") @Valid String tipo,
+                                                      @RequestParam("preco") @Valid Double preco,
+                                                      @RequestParam("qtProduto") @Valid Integer qtProduto,
                                                       @RequestParam("id") Integer idProduto,
                                                       @RequestParam(value = "file", required = false) MultipartFile file) throws RegraDeNegocioException, JsonProcessingException {
-        ProdutoCreateDTO produtoCreateDTO = objectMapper.readValue(produto, ProdutoCreateDTO.class);
+        ProdutoCreateDTO produtoCreateDTO = new ProdutoCreateDTO();
+        produtoCreateDTO.setNome(nome);
+        produtoCreateDTO.setDescricao(descricao);
+        produtoCreateDTO.setPreco(preco);
+        produtoCreateDTO.setTipo(tipo);
+        produtoCreateDTO.setQtProduto(qtProduto);
         produtoService.atualizar(produtoCreateDTO, idProduto);
         FileDTO fileDTO = fileService.store(file, idProduto);
         return new ResponseEntity<>(new ResultUtilSucess(fileDTO), HttpStatus.OK);

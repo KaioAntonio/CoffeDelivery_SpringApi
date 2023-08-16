@@ -35,5 +35,8 @@ public class ProdutoCreateDTO {
     @NotNull
     @Schema(description = "Data de criação do Produto",example = "13/05/2022 20:00")
     private LocalDateTime dtCriacao;
+    @NotNull
+    @Schema(description = "Quantidade de estoque do Produto", example = "1")
+    private Integer qtProduto;
 
 }
