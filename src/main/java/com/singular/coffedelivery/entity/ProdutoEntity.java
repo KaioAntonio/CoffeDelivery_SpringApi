@@ -40,6 +40,9 @@ public class ProdutoEntity {
     @Column(name = "dtCriacao")
     private LocalDateTime dtCriacao;
 
+    @Column(name = "qtProduto")
+    private Integer qtProduto;
+
     @JsonIgnore
     @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private FileEntity file;
