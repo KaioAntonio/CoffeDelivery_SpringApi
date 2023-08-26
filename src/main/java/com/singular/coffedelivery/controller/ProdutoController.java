@@ -3,13 +3,12 @@ package com.singular.coffedelivery.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.singular.coffedelivery.config.responses.ResultUtilSucess;
-import com.singular.coffedelivery.dto.produto.FileDTO;
-import com.singular.coffedelivery.dto.produto.ProdutoCreateDTO;
-import com.singular.coffedelivery.dto.produto.ProdutoDTO;
-import com.singular.coffedelivery.entity.ProdutoEntity;
-import com.singular.coffedelivery.exception.RegraDeNegocioException;
-import com.singular.coffedelivery.service.FileService;
-import com.singular.coffedelivery.service.ProdutoService;
+import com.singular.coffedelivery.domain.dto.produto.FileDTO;
+import com.singular.coffedelivery.domain.dto.produto.ProdutoCreateDTO;
+import com.singular.coffedelivery.domain.dto.produto.ProdutoDTO;
+import com.singular.coffedelivery.config.exception.RegraDeNegocioException;
+import com.singular.coffedelivery.domain.service.FileService;
+import com.singular.coffedelivery.domain.service.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,7 +31,6 @@ import java.util.List;
 public class ProdutoController {
     private final ProdutoService produtoService;
     private final FileService fileService;
-    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Cria um produto", description = "Cria um produto")
     @ApiResponses(
