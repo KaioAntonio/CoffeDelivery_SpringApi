@@ -43,7 +43,5 @@ public class PedidoCreateDTO {
     @NotBlank
     private String nome;
     private List<ProdutoIdQuantidadeDTO> produto;
-    @Schema(description = "Valor total", example = "52.99")
-    private Double vlTotal;
 
 }
