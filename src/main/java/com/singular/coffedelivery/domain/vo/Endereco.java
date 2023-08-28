@@ -10,6 +10,8 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class Endereco {
 
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP inválido. O formato deve ser XXXXX-XXX")

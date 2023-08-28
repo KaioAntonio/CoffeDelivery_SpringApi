@@ -1,5 +1,6 @@
 package com.singular.coffedelivery.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.singular.coffedelivery.domain.vo.DadosCliente;
 import com.singular.coffedelivery.domain.vo.Endereco;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,7 @@ public class PedidoEntity {
     private DadosCliente dadosCliente;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "pedido_produto",
             joinColumns = @JoinColumn(name = "pedido_id"),
