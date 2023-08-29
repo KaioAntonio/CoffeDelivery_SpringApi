@@ -1,11 +1,9 @@
 package com.singular.coffedelivery.controller;
 
 import com.singular.coffedelivery.config.responses.ResultUtilSucess;
-import com.singular.coffedelivery.dto.PageDTO;
-import com.singular.coffedelivery.dto.usuario.UsuarioCreateDTO;
-import com.singular.coffedelivery.dto.usuario.UsuarioDTO;
-import com.singular.coffedelivery.exception.RegraDeNegocioException;
-import com.singular.coffedelivery.service.UsuarioService;
+import com.singular.coffedelivery.domain.dto.usuario.UsuarioCreateDTO;
+import com.singular.coffedelivery.config.exception.RegraDeNegocioException;
+import com.singular.coffedelivery.domain.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
