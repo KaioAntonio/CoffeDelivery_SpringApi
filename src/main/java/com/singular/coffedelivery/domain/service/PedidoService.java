@@ -66,6 +66,7 @@ public class PedidoService {
         pedidoDTO.setNumero(pedidoCreateDTO.getNumero());
         pedidoDTO.setVlTotal(vlTotal);
         pedidoDTO.setProduto(produtoIdQuantidadeDTOList);
+        pedidoDTO.setFormaPagamento(pedidoCreateDTO.getFormaPagamento());
         return pedidoDTO;
     }
 
