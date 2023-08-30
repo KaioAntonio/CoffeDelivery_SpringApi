@@ -3,6 +3,7 @@ package com.singular.coffedelivery.domain.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.singular.coffedelivery.domain.vo.DadosCliente;
 import com.singular.coffedelivery.domain.vo.Endereco;
+import com.singular.coffedelivery.util.enums.FormaPagamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,9 @@ public class PedidoEntity {
 
     @Column(name = "dadosCliente")
     private DadosCliente dadosCliente;
+
+    @Column(name = "formaPagamento")
+    private FormaPagamento formaPagamento;
 
     @ManyToMany
     @JsonIgnore

@@ -25,6 +25,43 @@ public class PedidoController {
 
     private final PedidoService pedidoService;
 
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
+            "<ul>" +
+            "<li>**__CEP__**: CEP do cliente.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
+            "</ul>" +
+            "</li>" +
+            "<li>**__descricao__**: Descrição do Produto.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
+            "</ul>" +
+            "</li>"+
+            "<li>**__tipo__**: Tipo do Produto.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
+            "</ul>" +
+            "</li>"+
+            "<li>**__preco__**: Preço do Produto.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+            "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
+            "</ul>" +
+            "<li>**__qtProduto__**: Quantidade em estoque do Produto.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+            "<li>**O valor mínimo é 0 e máximo 9999**</li>" +
+            "</ul>" +
+            "<li>**__file__**: Imagem do Produto.</li>" +
+            "<ul>"+
+            "<li>**Arquivo tem que ser uma imagem.**</li>" +
+            "</ul>" +
+            "</li>"+
+            "</ul>"
+    )
     @PostMapping("/criar")
     public ResponseEntity<ResultUtilSucess> criar(@RequestBody @Valid PedidoCreateDTO pedidoCreateDTO
     ) throws RegraDeNegocioException {

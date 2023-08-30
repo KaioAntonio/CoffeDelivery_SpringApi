@@ -1,14 +1,13 @@
 package com.singular.coffedelivery.domain.dto.pedido;
 
 import com.singular.coffedelivery.domain.dto.produto.ProdutoIdQuantidadeDTO;
-import com.singular.coffedelivery.domain.entity.ProdutoEntity;
+import com.singular.coffedelivery.util.enums.FormaPagamento;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -42,6 +41,9 @@ public class PedidoCreateDTO {
     @Schema(description = "Nome do Cliente", example = "Luan Lemos")
     @NotBlank
     private String nome;
+    @Schema(description = "Forma de Pagamento", example = "DINHEIRO")
+    @NotNull
+    private FormaPagamento formaPagamento;
     private List<ProdutoIdQuantidadeDTO> produto;
 
 }
