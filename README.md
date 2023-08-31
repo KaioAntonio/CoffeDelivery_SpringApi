@@ -7,10 +7,9 @@ Este projeto é uma API RESTful que permite a realização de pedidos de café e
 ## Funcionalidades
 A API possui as seguintes funcionalidades:
 
-- Cadastro de usuários: permite o registro de novos usuários para que possam administrar a pagina e cadastrar produtos.
-- Cadastro de produtos: permite o cadastro de diferentes tipos de café disponíveis para entrega.
-- Realização de pedidos: os usuários podem fazer pedidos de café, especificando o tipo de café desejado, a quantidade e o endereço de entrega.
-- Consulta de pedidos: os usuários podem consultar os pedidos que foram realizados, verificando o status de cada um deles.
+- Cadastro de usuários: permite o registro de novos usuários para que possam administrar a pagina e administrar produtos.
+- Gerenciamento de produtos: permite o administrar de diferentes tipos de café disponíveis para entrega.
+- Gerenciamento de pedidos: os clientes podem fazer pedidos dos cafés e os administradores podem gerenciar os pedidos.
 
 ## Pré-requisitos
 Para executar o projeto localmente, é necessário ter o seguinte ambiente configurado:
