@@ -1,5 +1,15 @@
 # CoffeDelivery_SpringApi
-Este é um repositório que contém uma API de entrega de café desenvolvida em Java usando Spring Boot, Spring Security, JPA, Hibernate, PostgreSQL e implantada no Heroku.
+Este é um repositório que contém uma API de entrega de café desenvolvida em: 
+
+- Java 8
+- Spring Boot 2.6.4
+- Spring Security
+- JPA
+- Hibernate
+- PostgreSQL
+- JUnit
+- Mockito
+- Deploy no Heroku.
 
 ## Descrição
 Este projeto é uma API RESTful que permite a realização de pedidos de café e a entrega dos mesmos. A API foi desenvolvida usando o framework Spring Boot e persiste os dados no banco de dados PostgreSQL por meio do JPA e do Hibernate. A aplicação também foi implantada no Heroku, permitindo acesso remoto à API.
