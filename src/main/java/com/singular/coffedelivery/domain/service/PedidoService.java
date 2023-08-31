@@ -2,6 +2,7 @@ package com.singular.coffedelivery.domain.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.singular.coffedelivery.config.exception.RegraDeNegocioException;
+import com.singular.coffedelivery.domain.dto.PageDTO;
 import com.singular.coffedelivery.domain.dto.pedido.PedidoCreateDTO;
 import com.singular.coffedelivery.domain.dto.pedido.PedidoDTO;
 import com.singular.coffedelivery.domain.dto.produto.ProdutoIdQuantidadeDTO;
@@ -11,6 +12,9 @@ import com.singular.coffedelivery.domain.repository.PedidoRepository;
 import com.singular.coffedelivery.domain.vo.DadosCliente;
 import com.singular.coffedelivery.domain.vo.Endereco;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +73,21 @@ public class PedidoService {
         pedidoDTO.setProduto(produtoIdQuantidadeDTOList);
         pedidoDTO.setFormaPagamento(pedidoCreateDTO.getFormaPagamento());
         return pedidoDTO;
+    }
+
+    public PageDTO<PedidoDTO> buscar(Integer pagina, Integer tamanho) {
+        Pageable solicitacaoPagina = PageRequest.of(pagina, tamanho);
+        Page<PedidoEntity> pedido = pedidoRepository.findAll(solicitacaoPagina);
+        List<PedidoDTO> pedidoDTOS = pedido.getContent().stream()
+                .map(p -> objectMapper.convertValue(p, PedidoDTO.class))
+                .collect(Collectors.toList());
+
+        return new PageDTO<>(pedido.getTotalElements(),
+                pedido.getTotalPages(),
+                pagina,
+                tamanho,
+                pedidoDTOS);
+
     }
 
 }

@@ -27,37 +27,65 @@ public class PedidoController {
 
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Campos de entrada: <br>" +
             "<ul>" +
-            "<li>**__CEP__**: CEP do cliente.</li>" +
+            "<li>**__CEP__**: CEP do Cliente.</li>" +
             "<ul>"+
-            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "<li>**O valor tem que seguir a máscara: xxxxx-xxx**</li>" +
             "<li>**O campo não pode ser vazio**</li>" +
             "</ul>" +
             "</li>" +
-            "<li>**__descricao__**: Descrição do Produto.</li>" +
+            "<li>**__rua__**: Rua do Cliente.</li>" +
             "<ul>"+
             "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
             "<li>**O campo não pode ser vazio**</li>" +
             "</ul>" +
             "</li>"+
-            "<li>**__tipo__**: Tipo do Produto.</li>" +
+            "<li>**__numero__**: Número da casa do Cliente.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
+            "</ul>" +
+            "</li>"+
+            "<li>**__complemento__**: Complemento do Endereço do Cliente.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "</ul>" +
+            "<li>**__bairro__**: Bairro do Cliente.</li>" +
             "<ul>"+
             "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
             "<li>**O campo não pode ser vazio**</li>" +
             "</ul>" +
-            "</li>"+
-            "<li>**__preco__**: Preço do Produto.</li>" +
+            "<li>**__cidade__**: Cidade do Cliente.</li>" +
             "<ul>"+
-            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
-            "<li>**O valor mínimo é 0.01 e máximo 9999.99**</li>" +
+            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
             "</ul>" +
-            "<li>**__qtProduto__**: Quantidade em estoque do Produto.</li>" +
+            "<li>**__uf__**: Unidade Federativa.</li>" +
             "<ul>"+
-            "<li>**Quantidade mínima de 1 algarismo e máxima 4.**</li>" +
-            "<li>**O valor mínimo é 0 e máximo 9999**</li>" +
+            "<li>**Quantidade mínima de 1 character e máxima 2.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
             "</ul>" +
-            "<li>**__file__**: Imagem do Produto.</li>" +
+            "<li>**__telefone__**: Telefone do Cliente.</li>" +
             "<ul>"+
-            "<li>**Arquivo tem que ser uma imagem.**</li>" +
+            "<li>**O formato deve ser (XX) X XXXX-XXXX.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
+            "</ul>" +
+            "<li>**__nome__**: Nome do Cliente.</li>" +
+            "<ul>"+
+            "<li>**Quantidade mínima de 1 character e máxima 255.**</li>" +
+            "<li>**O campo não pode ser vazio**</li>" +
+            "</ul>" +
+            "<li>**__formaPagamento__**: Forma de Pagamento.</li>" +
+            "<ul>"+
+            "<li>A forma de pagamento é um enumerador e só pode seguir o seguintes valores:</li>" +
+            "<li>**DINHEIRO**</li>" +
+            "<li>**DEBITO**</li>" +
+            "<li>**CREDITO**</li>" +
+            "</ul>" +
+            "<li>**__produto__**: Produtos a serem comprados.</li>" +
+            "<ul>"+
+            "<li>Lista de produtos a serem comprados com os seguintes campos requeridos:</li>" +
+            "<li>**qtProdutos (Inteiro)**</li>" +
+            "<li>**idProduto (Inteiro)**</li>" +
             "</ul>" +
             "</li>"+
             "</ul>"
