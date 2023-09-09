@@ -49,6 +49,7 @@ public class ProdutoEntity {
     @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private FileEntity file;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "produtos")
     private Set<PedidoEntity> pedidos = new HashSet<>();
 

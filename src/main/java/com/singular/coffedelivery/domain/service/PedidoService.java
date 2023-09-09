@@ -5,6 +5,7 @@ import com.singular.coffedelivery.config.exception.RegraDeNegocioException;
 import com.singular.coffedelivery.domain.dto.PageDTO;
 import com.singular.coffedelivery.domain.dto.pedido.PedidoCreateDTO;
 import com.singular.coffedelivery.domain.dto.pedido.PedidoDTO;
+import com.singular.coffedelivery.domain.dto.pedido.PedidoGetDTO;
 import com.singular.coffedelivery.domain.dto.produto.ProdutoIdQuantidadeDTO;
 import com.singular.coffedelivery.domain.entity.PedidoEntity;
 import com.singular.coffedelivery.domain.entity.ProdutoEntity;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,12 +77,15 @@ public class PedidoService {
         return pedidoDTO;
     }
 
-    public PageDTO<PedidoDTO> buscar(Integer pagina, Integer tamanho) {
+    public PageDTO<PedidoGetDTO> buscar(Integer pagina, Integer tamanho) {
         Pageable solicitacaoPagina = PageRequest.of(pagina, tamanho);
         Page<PedidoEntity> pedido = pedidoRepository.findAll(solicitacaoPagina);
-        List<PedidoDTO> pedidoDTOS = pedido.getContent().stream()
-                .map(p -> objectMapper.convertValue(p, PedidoDTO.class))
+        List<PedidoGetDTO> pedidoDTOS = pedido.getContent().stream()
+                .map(p -> objectMapper.convertValue(p, PedidoGetDTO.class))
                 .collect(Collectors.toList());
+        for (int i = 0; i < pedidoDTOS.size(); i++){
+            pedidoDTOS.get(i).setProdutos(buscarPedidoComProdutos(pedidoDTOS.get(i).getIdPedido()));
+        }
 
         return new PageDTO<>(pedido.getTotalElements(),
                 pedido.getTotalPages(),
@@ -88,6 +93,14 @@ public class PedidoService {
                 tamanho,
                 pedidoDTOS);
 
+    }
+
+    public Set<ProdutoEntity> buscarPedidoComProdutos(Integer idPedido) {
+        PedidoEntity pedido = pedidoRepository.findById(idPedido).orElse(null);
+        if (pedido != null) {
+            return new HashSet<>(pedido.getProdutos());
+        }
+        return null;
     }
 
 }
