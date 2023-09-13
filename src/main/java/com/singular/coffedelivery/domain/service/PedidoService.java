@@ -12,6 +12,7 @@ import com.singular.coffedelivery.domain.entity.ProdutoEntity;
 import com.singular.coffedelivery.domain.repository.PedidoRepository;
 import com.singular.coffedelivery.domain.vo.DadosCliente;
 import com.singular.coffedelivery.domain.vo.Endereco;
+import com.singular.coffedelivery.util.enums.Situacao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,7 +59,7 @@ public class PedidoService {
                 pedidoCreateDTO.getComplemento(), pedidoCreateDTO.getBairro(), pedidoCreateDTO.getCidade(),
                 pedidoCreateDTO.getUf()));
         pedido.setVlTotal(vlTotal);
-
+        pedido.setSituacao(Situacao.EM_ANALISE);
         pedidoRepository.save(pedido);
         PedidoDTO pedidoDTO = objectMapper.convertValue(pedido, PedidoDTO.class);
         pedidoDTO.setNome(pedidoCreateDTO.getNome());
@@ -74,6 +75,7 @@ public class PedidoService {
         pedidoDTO.setVlTotal(vlTotal);
         pedidoDTO.setProduto(produtoIdQuantidadeDTOList);
         pedidoDTO.setFormaPagamento(pedidoCreateDTO.getFormaPagamento());
+        pedidoDTO.setSituacao(Situacao.EM_ANALISE);
         return pedidoDTO;
     }
 
@@ -93,6 +95,30 @@ public class PedidoService {
                 tamanho,
                 pedidoDTOS);
 
+    }
+
+    public void enviarPedido(Integer idPedido) throws RegraDeNegocioException {
+        alterarSituacaoPedido(idPedido, Situacao.ENVIADO);
+    }
+
+    public void finalizarPedido(Integer idPedido) throws RegraDeNegocioException {
+        alterarSituacaoPedido(idPedido, Situacao.FINALIZADO);
+    }
+
+    public void cancelarPedido(Integer idPedido) throws RegraDeNegocioException {
+        alterarSituacaoPedido(idPedido, Situacao.CANCELADO);
+    }
+
+    private void alterarSituacaoPedido(Integer idPedido, Situacao situacao) throws RegraDeNegocioException {
+        PedidoEntity pedido = buscarPorId(idPedido);
+        pedido.setSituacao(situacao);
+        pedidoRepository.save(pedido);
+    }
+
+    public PedidoEntity buscarPorId(Integer idPedido) throws RegraDeNegocioException {
+        return objectMapper.convertValue(pedidoRepository.findById(idPedido)
+                        .orElseThrow(() ->  new RegraDeNegocioException("Pedido não foi encontrado!")),
+                PedidoEntity.class);
     }
 
     public Set<ProdutoEntity> buscarPedidoComProdutos(Integer idPedido) {

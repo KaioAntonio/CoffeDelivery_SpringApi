@@ -2,6 +2,7 @@ package com.singular.coffedelivery.domain.dto.pedido;
 
 import com.singular.coffedelivery.domain.dto.produto.ProdutoIdQuantidadeDTO;
 import com.singular.coffedelivery.util.enums.FormaPagamento;
+import com.singular.coffedelivery.util.enums.Situacao;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -48,6 +49,9 @@ public class PedidoCreateDTO {
     @Schema(description = "Forma de Pagamento", example = "DINHEIRO")
     @NotNull
     private FormaPagamento formaPagamento;
+    @Schema(description = "Situação do Pedido", example = "ENVIADO")
+    @NotNull
+    private Situacao situacao;
     private List<ProdutoIdQuantidadeDTO> produto;
 
 }
