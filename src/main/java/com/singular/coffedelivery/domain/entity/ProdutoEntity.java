@@ -46,11 +46,11 @@ public class ProdutoEntity {
     private Integer qtProduto;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "produto", fetch = FetchType.LAZY)
     private FileEntity file;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "produtos")
+    @ManyToMany(mappedBy = "produtos", fetch = FetchType.LAZY)
     private Set<PedidoEntity> pedidos = new HashSet<>();
 
 }
