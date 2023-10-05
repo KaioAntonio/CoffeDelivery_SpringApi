@@ -49,9 +49,6 @@ public class PedidoCreateDTO {
     @Schema(description = "Forma de Pagamento", example = "DINHEIRO")
     @NotNull
     private FormaPagamento formaPagamento;
-    @Schema(description = "Situação do Pedido", example = "ENVIADO")
-    @NotNull
-    private Situacao situacao;
     private List<ProdutoIdQuantidadeDTO> produto;
 
 }
